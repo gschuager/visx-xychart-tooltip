@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import appleStock from '@visx/mock-data/lib/mocks/appleStock';
+import ParentSize from '@visx/responsive/lib/components/ParentSize';
+import { TooltipProvider } from '@visx/xychart';
 import './App.css';
+import { Chart3 } from './Chart';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ marginTop: '300px', width: '100%', height: '600px' }}>
+      <AppleChart />
     </div>
   );
 }
+
+const AppleChart = () => {
+  const data = appleStock.map((x) => ({
+    timestamp: +new Date(x.date),
+    value: x.close,
+  }));
+
+  return (
+    <ParentSize>
+      {({ width, height }) => (
+        <TooltipProvider hideTooltipDebounceMs={100}>
+          <Chart3
+            data={data}
+            width={width}
+            height={height}
+            margin={{
+              top: 10,
+              bottom: 50,
+              left: 10,
+              right: 10,
+            }}
+          />
+        </TooltipProvider>
+      )}
+    </ParentSize>
+  );
+};
 
 export default App;
